@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolyphasicScheduleFinder", "PolyphasicScheduleFinder\PolyphasicScheduleFinder.csproj", "{E1C73D1C-0DEE-4462-A1F2-6EFCD11126FD}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ScheduleFinder Installer", "ScheduleFinder Installer\ScheduleFinder Installer.vdproj", "{FA713B1E-987B-4BC6-B951-8938B10C7773}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1C73D1C-0DEE-4462-A1F2-6EFCD11126FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1C73D1C-0DEE-4462-A1F2-6EFCD11126FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1C73D1C-0DEE-4462-A1F2-6EFCD11126FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1C73D1C-0DEE-4462-A1F2-6EFCD11126FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA713B1E-987B-4BC6-B951-8938B10C7773}.Debug|Any CPU.ActiveCfg = Debug
+		{FA713B1E-987B-4BC6-B951-8938B10C7773}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {70C10710-ED99-4124-9875-54DC72363560}
+	EndGlobalSection
+EndGlobal
