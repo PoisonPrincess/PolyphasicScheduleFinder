@@ -19,9 +19,7 @@ namespace PolyphasicScheduleFinder
         internal static bool _noRestrictions = false;
         const bool _consoleWrite = true;
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        /// <summary> The main entry point for the application. </summary>
         [STAThread]
         static void Main()
         {
@@ -34,9 +32,7 @@ namespace PolyphasicScheduleFinder
         #endregion
 
         #region setup
-        /// <summary>
-        /// Read in data from schedule database and adds it to the scheduleDB
-        /// </summary>
+        /// <summary> Read in data from schedule database and adds it to the scheduleDB </summary>
         internal static void populateScheduleDB(bool consoleWrite)
         {
             string name, DPS, DPE, link;
@@ -106,16 +102,13 @@ namespace PolyphasicScheduleFinder
             }
         }
 
-        /// <summary>
-        /// Start schedulefinding
-        /// </summary>
+        /// <summary> Start schedulefinding </summary>
         /// <param name="age">User's age</param>
         /// <param name="activity">User's physical activity level</param>
         /// <param name="monoBaseline">User's mono baseline length (hours)</param>
         /// <param name="userSleepTimes">List of sleepblocks that show when the user can sleep</param>
         /// <param name="noRestrict">If the user has no sleep time restrictions</param>
         /// <param name="experience">User's polyphasic sleep experience</param>
-        /// <returns></returns>
         internal static List<Schedule> start(int age, int activity, double monoBaseline, List<SleepBlock> userSleepTimes, bool noRestrict, int experience)
         {
             _noRestrictions = noRestrict;
@@ -128,9 +121,7 @@ namespace PolyphasicScheduleFinder
             return findValidSchedules(userSleepTimes, age, activity, monoBaseline, experience);
         }
 
-        /// <summary>
-        /// Populate the HRatings based on how good that time is for each vital sleep
-        /// </summary>
+        /// <summary> Populate the HRatings based on how good that time is for each vital sleep </summary>
         /// <param name="exercise">User's exercise level</param>
         private static void populateHourRatings(int exercise)
         {
@@ -186,15 +177,12 @@ namespace PolyphasicScheduleFinder
         #endregion
 
         #region schedule finder
-        /// <summary>
-        /// Determines which schedules user should be able to do based on personal parameters
-        /// </summary>
+        /// <summary> Determines which schedules user should be able to do based on personal parameters </summary>
         /// <param name="userSleepTimes">List of sleepblocks that show when the user can sleep</param>
         /// <param name="age">User's age</param>
         /// <param name="activity">User's physical activity level</param>
         /// <param name="monoBaseline">User's mono baseline length (hours)</param>
         /// <param name="experience">User's polyphasic sleep experience</param>
-        /// <returns></returns>
         private static List<Schedule> findValidSchedules(List<SleepBlock> userSleepTimes, int age, int activity, double monoBaseline, int experience)
         {
             bool consoleWrite = false;
@@ -353,12 +341,9 @@ namespace PolyphasicScheduleFinder
             return possibleSchedules;
         }
 
-        /// <summary>
-        /// Attempts to crudely fit schedule to user's availability
-        /// </summary>
+        /// <summary> Attempts to crudely fit schedule to user's availability </summary>
         /// <param name="userSleepTimes">List of sleepblocks that show when the user can sleep</param>
         /// <param name="s">Schedule to attempt to match with the user's sleep times</param>
-        /// <returns></returns>
         private static Schedule tryFitSchedule(List<SleepBlock> userSleepTimes, Schedule s)
         {
             bool fullConsoleWrite = false; //for testing purposes only- spams console
@@ -455,22 +440,17 @@ namespace PolyphasicScheduleFinder
             return proposed;
         }
 
-        /// <summary>
-        /// Updates hour ratings based on schedule availability to help prioritize sleep placement
-        /// </summary>
+        /// <summary> Updates hour ratings based on schedule availability to help prioritize sleep placement </summary>
         /// <param name="block">Sleep block of the schedule</param>
         /// <param name="userBlock">Sleep block of user's availability</param>
-        /// <returns></returns>
         private static int[] uptateHRatings(SleepBlock block, SleepBlock userBlock)
         {
             bool consoleWrite = false;
 
             int[] hRatings = new int[288];
-            for (int i = 0; i < 288; i++)
-            {
+            for (int i = 0; i < 288; i++) 
                 hRatings[i] = _hourRatings[(int)Math.Floor((double)(i * 5 / 60)), 0];
-            }
-
+            
             double blockLength = convertDifferenceToDouble(block.startTime, block.endTime);
             double[] start = addTime(convertDifferenceToDouble("00:00", block.startTime), 0);
             double[] end = addTime(convertDifferenceToDouble("00:00", block.endTime), 0);
@@ -523,16 +503,13 @@ namespace PolyphasicScheduleFinder
             return hRatings;
         }
 
-        /// <summary>
-        /// Refines gaps to be within reasonable ranges, as defined by Schedules.txt
-        /// </summary>
+        /// <summary> Refines gaps to be within reasonable ranges, as defined by Schedules.txt </summary>
         /// <param name="userSched">Custom schedule fit to user's sleep times</param>
         /// <param name="basicSched">Basic version of the same schedule</param>
         /// <param name="hrl">Hour Rating List (list of ratings of how viable each 5m mark is for scheduling sleep</param>
         /// <param name="gaps">Distances between each sleep</param>
         /// <param name="indexesOfProblemGaps">Index of problematic gaps in the gaps list/param>
         /// <param name="depth">Number of recursions of fixGaps()</param>
-        /// <returns></returns>
         private static Schedule fixGaps(Schedule userSched, Schedule basicSched, List<int[]> hrl, List<double> gaps, List<int> indexesOfProblemGaps, int[] depth)
         {
             bool consoleWrite = false;
@@ -678,17 +655,15 @@ namespace PolyphasicScheduleFinder
             return userSched;
         }
 
-        /// <summary>
-        /// Refines gaps to be within reasonable ranges, as defined by Schedules.txt, but tries moving the sleeps in reverse order in case
-        /// there is a gap that can't be fixed by moving the first sleep back or forward first.
-        /// </summary>
+        /// <summary> Refines gaps to be within reasonable ranges, as defined by Schedules.txt 
+        /// but tries moving the sleeps in reverse order in case there is a gap that can't be fixed by 
+        /// moving the first sleep back or forward first. </summary>
         /// <param name="userSched">Custom schedule fit to user's sleep times</param>
         /// <param name="basicSched">Basic version of the same schedule</param>
         /// <param name="hrl">Hour Rating List (list of ratings of how viable each 5m mark is for scheduling sleep</param>
         /// <param name="gaps">Distances between each sleep</param>
         /// <param name="indexesOfProblemGaps">Index of problematic gaps in the gaps list/param>
         /// <param name="depth">Number of recursions of fixGaps()</param>
-        /// <returns></returns>
         private static Schedule fixGapsReverse(Schedule userSched, Schedule basicSched, List<int[]> hrl, List<double> gaps, List<int> indexesOfProblemGaps, int[] depth)
         {
             bool consoleWrite = false;
@@ -836,10 +811,7 @@ namespace PolyphasicScheduleFinder
         #endregion
 
         #region converters
-        /// <summary>
-        /// modifies mono entry in db to fit user's mono length
-        /// </summary>
-        /// <param name="monoBaseline"></param>
+        /// <summary> modifies mono entry in db to fit user's mono length </summary>
         public static void modifyMono(double monoBaseline)
         {
             int mono = _scheduleDB.Count - 1;
@@ -850,14 +822,12 @@ namespace PolyphasicScheduleFinder
             _scheduleDB[mono].sleeps[0].endTime = convertDoubleToTime(newEnd);
         }
 
-        /// <summary>
-        /// 6.25 -> 06:15
-        /// </summary>
+        /// <summary> 6.25 -> 06:15 </summary>
         public static string convertDoubleToTime(double time)
         {
             double hour = Math.Floor(time);
 
-            string minutes = (Math.Round((time - Math.Floor(time)) * 60)).ToString();
+            string minutes = Math.Round((time - Math.Floor(time)) * 60).ToString();
             if (minutes.Length < 2) minutes = "0" + minutes;
             if (minutes == "60")
             {
@@ -872,9 +842,7 @@ namespace PolyphasicScheduleFinder
             return hours + ":" + minutes;
         }
 
-        /// <summary>
-        /// 02:15 -> 135
-        /// </summary>
+        /// <summary> 02:15 -> 135 </summary>
         public static int convertTimeToInt(string time)
         {
             int hours, minutes;
@@ -885,22 +853,18 @@ namespace PolyphasicScheduleFinder
             return hours + minutes;
         }
 
-        /// <summary>
-        /// (00:15), (07:45) -> 7.5
-        /// </summary>
-        public static double convertDifferenceToDouble(string startTime, string endTime) { return (double)convertTimeToInt(getDifferenceTime(startTime, endTime)) / 60; }
+        /// <summary> (00:15), (07:45) -> 7.5 </summary>
+        public static double convertDifferenceToDouble(string startTime, string endTime) => (double)convertTimeToInt(getDifferenceTime(startTime, endTime)) / 60;
 
-        /// <summary>
-        /// (00:15), (07:45) -> 07:30
-        /// </summary>
+        /// <summary> (00:15), (07:45) -> 07:30 </summary>
         public static string getDifferenceTime(string startTime, string endTime)
         {
             int min, hours, min1, min2, h1, h2;
 
-            h1 = Int32.Parse(startTime.Trim().Substring(0, startTime.Trim().IndexOf(":")));
-            h2 = Int32.Parse(endTime.Trim().Substring(0, endTime.Trim().IndexOf(":")));
-            min1 = Int32.Parse(startTime.Trim().Remove(0, startTime.Trim().IndexOf(":") + 1));
-            min2 = Int32.Parse(endTime.Trim().Remove(0, endTime.Trim().IndexOf(":") + 1));
+            h1 = Int32.Parse(startTime.Substring(0, startTime.IndexOf(':')));
+            h2 = Int32.Parse(endTime.Substring(0, endTime.IndexOf(':')));
+            min1 = Int32.Parse(startTime.Substring(startTime.IndexOf(':') + 1));
+            min2 = Int32.Parse(endTime.Substring(endTime.IndexOf(':') + 1));
 
             if (min2 < min1)
             {
@@ -917,9 +881,7 @@ namespace PolyphasicScheduleFinder
             return ((hours > 0 ? (hours < 10 ? "0" + hours : hours.ToString()) : "00") + ":" + (min > 0 ? (min < 10 ? "0" + min : min.ToString()) : "00")).Trim();
         }
 
-        /// <summary>
-        /// (03:15), (25) -> 64
-        /// </summary>
+        /// <summary> (03:15), (25) -> 64 </summary>
         public static int stringToMinutes(string minutes, int difference)
         {
             double time = convertDifferenceToDouble("00:00", minutes); //(03:15) -> 3.25
@@ -931,13 +893,10 @@ namespace PolyphasicScheduleFinder
             return (int)Math.Floor(time);
         }
 
-        /// <summary>
-        /// (2.30), (2) -> (4.30, 28.30)
-        /// </summary>
+        /// <summary> (2.30), (2) -> (4.30, 28.30) </summary>
         /// <param name="time">The time to shift</param>
         /// <param name="add">Hours to shift by</param>
         /// <param name="rollOverToNewDay">Whether or not to reduce time by 24h if it crosses into a new day</param>
-        /// <returns></returns>
         private static double[] addTime(double time, double add) 
         {
             double[] summed = new double[2];
@@ -950,9 +909,7 @@ namespace PolyphasicScheduleFinder
             return summed;
         }
 
-        /// <summary>
-        /// Reduces doubles to 2 decimals or less (for printing purposes)
-        /// </summary>
+        /// <summary> Reduces doubles to 2 decimals or less (for printing purposes) </summary>
         private static string shorten(double input)
         {
             string i = input.ToString();
@@ -969,9 +926,7 @@ namespace PolyphasicScheduleFinder
         #endregion
 
         #region checks
-        /// <summary>
-        /// Check that sleep range is in a valid format
-        /// </summary>
+        /// <summary> Check that sleep range is in a valid format </summary>
         /// <param name="result">Sleep time to check (00:00)</param>
         internal static bool checkLongSleepTime(string result)
         {
@@ -988,6 +943,7 @@ namespace PolyphasicScheduleFinder
             }
         }
 
+        /// <summary> Check overlaps by start time and end time in the format "22:30" and "07:59" and by sleepblock lists </summary>
         internal static bool checkSleepOverlaps(string rStartTime, string rEndTime, List<SleepBlock> userSleepTimes)
         {
             bool consoleWrite = false;
@@ -1041,11 +997,9 @@ namespace PolyphasicScheduleFinder
             }
 
             return false; //if no overlaps have been detected, return
-        } //check overlaps by start time and end time in the format "22:30" and "07:59" and by sleepblock lists
+        }
 
-        /// <summary>
-        /// Compares a block with a block's earliestStart-latestEnd variables to see if they overlap
-        /// </summary>
+        /// <summary> Compares a block with a block's earliestStart-latestEnd variables to see if they overlap </summary>
         /// <param name="uBlock">The block to compare</param>
         /// <param name="extendedBlock">The block to get earliest-latest from</param>
         internal static bool checkSleepOverlapsEarliestToLatest(SleepBlock uBlock, SleepBlock extendedBlock)
@@ -1056,17 +1010,13 @@ namespace PolyphasicScheduleFinder
             double[] latest = addTime(convertDifferenceToDouble("00:00", extendedBlock.latestEndTime), 0);
 
             if (((start[0] < end[0]) && (earliest[0] > latest[0]) &&
-                (((start[1] >= earliest[0]) && (start[0] < latest[0])) || ((end[0] <= latest[1]) && (end[0] > earliest[0])))) 
-                ||
+                (((start[1] >= earliest[0]) && (start[0] < latest[0])) || ((end[0] <= latest[1]) && (end[0] > earliest[0])))) ||
                 ((start[0] > end[0]) && (earliest[0] > latest[0]) &&
-                (((start[0] >= earliest[0]) && (start[0] < latest[1])) || ((end[0] <= latest[0]) && (end[1] > earliest[0])))) 
-                ||
+                (((start[0] >= earliest[0]) && (start[0] < latest[1])) || ((end[0] <= latest[0]) && (end[1] > earliest[0])))) ||
                 ((start[0] > end[0]) && (earliest[0] < latest[0]) &&
-                (((start[0] >= earliest[0]) && (start[0] < latest[0])) || ((end[0] <= latest[0]) && (end[0] > earliest[0])))) 
-                ||
+                (((start[0] >= earliest[0]) && (start[0] < latest[0])) || ((end[0] <= latest[0]) && (end[0] > earliest[0])))) ||
                 ((start[0] < end[0]) && (earliest[0] < latest[0]) &&
-                (((start[0] >= earliest[0]) && (start[0] < latest[0])) || ((end[0] <= latest[0]) && (end[0] > earliest[0])))) 
-                ||
+                (((start[0] >= earliest[0]) && (start[0] < latest[0])) || ((end[0] <= latest[0]) && (end[0] > earliest[0])))) ||
                 checkSleepNests(extendedBlock, uBlock))
             {
                 return true;
@@ -1074,12 +1024,9 @@ namespace PolyphasicScheduleFinder
             else return false;
         }
 
-        /// <summary>
-        /// Checks to see if a block fits completely within another block's earliest-latest range
-        /// </summary>
+        /// <summary> Checks to see if a block fits completely within another block's earliest-latest range  </summary>
         /// <param name="block">The block to try nesting</param>
         /// <param name="extendedBlock">The block to get earliest-latest from to nest the other block within</param>
-        /// <returns></returns>
         internal static bool checkSleepNestsEarliestToLatest(SleepBlock block, SleepBlock extendedBlock)
         {
             double[] start = addTime(convertDifferenceToDouble("00:00", block.startTime), 0);
@@ -1090,25 +1037,20 @@ namespace PolyphasicScheduleFinder
             if ((start[0] > end[0]) && (earliest[0] < latest[0])) return false;
             else if (
             ((((start[0] < end[0]) && (earliest[0] < latest[0])) || ((start[0] > end[0]) && (earliest[0] > latest[0]))) &&
-            (start[0] >= earliest[0] && end[0] <= latest[0])) 
-            ||
-            ((((start[0] < end[0]) && (earliest[0] > latest[0])) && start[0] < earliest[0]) &&
-            (start[1] >= earliest[0] && end[0] <= latest[0])) 
-            ||
-            ((((start[0] < end[0]) && (earliest[0] > latest[0])) && start[0] >= earliest[0]) &&
-            (start[0] >= earliest[0] && end[0] <= latest[1])))
+            start[0] >= earliest[0] && end[0] <= latest[0]) ||
+            ((start[0] < end[0]) && (earliest[0] > latest[0]) && start[0] < earliest[0] &&
+            start[1] >= earliest[0] && end[0] <= latest[0]) ||
+            ((start[0] < end[0]) && (earliest[0] > latest[0]) && start[0] >= earliest[0] &&
+            start[0] >= earliest[0] && end[0] <= latest[1]))
             {
                 return true;
             }
-            else return false;            
+            else return false;
         }
 
-        /// <summary>
-        /// Checks to see if a block fits completely within another block
-        /// </summary>
+        /// <summary> Checks to see if a block fits completely within another block </summary>
         /// <param name="block">The block to try nesting</param>
         /// <param name="userBlock">The block to nest the other block within</param>
-        /// <returns></returns>
         internal static bool checkSleepNests(SleepBlock block, SleepBlock userBlock)
         {
             double[] start = addTime(convertDifferenceToDouble("00:00", block.startTime), 0);
@@ -1116,26 +1058,22 @@ namespace PolyphasicScheduleFinder
             double[] uStart = addTime(convertDifferenceToDouble("00:00", userBlock.startTime), 0);
             double[] uEnd = addTime(convertDifferenceToDouble("00:00", userBlock.endTime), 0);
 
-            if ((start[0] > end[0]) && (uStart[0] < uEnd[0]))return false;
+            if ((start[0] > end[0]) && (uStart[0] < uEnd[0])) return false;
             else if (
             ((((start[0] < end[0]) && (uStart[0] < uEnd[0])) || ((start[0] > end[0]) && (uStart[0] > uEnd[0]))) &&
-            (start[0] >= uStart[0] && end[0] <= uEnd[0])) 
-            ||
-            ((((start[0] < end[0]) && (uStart[0] > uEnd[0])) && start[0] < uStart[0]) &&
-            (start[1] >= uStart[0] && end[0] <= uEnd[0])) 
-            ||
-            ((((start[0] < end[0]) && (uStart[0] > uEnd[0])) && start[0] >= uStart[0]) &&
-            (start[0] >= uStart[0] && end[0] <= uEnd[1])))
+            start[0] >= uStart[0] && end[0] <= uEnd[0]) ||
+            ((start[0] < end[0]) && (uStart[0] > uEnd[0]) && start[0] < uStart[0] &&
+            start[1] >= uStart[0] && end[0] <= uEnd[0]) ||
+            ((start[0] < end[0]) && (uStart[0] > uEnd[0]) && start[0] >= uStart[0] &&
+            start[0] >= uStart[0] && end[0] <= uEnd[1]))
             {
                 return true;
             }
             else return false;
         }
 
-        /// <summary>
-        /// Checks if the chosen schedule has a higher tst than their mono baseline
-        /// </summary>
-        internal static bool shorterThanMono(double monoBaseline, string schedTST) { return monoBaseline >= convertDifferenceToDouble("00:00", schedTST); }
+        /// <summary> Checks if the chosen schedule has a higher tst than their mono baseline </summary>
+        internal static bool shorterThanMono(double monoBaseline, string schedTST) => monoBaseline >= convertDifferenceToDouble("00:00", schedTST);
         #endregion
     }
 }

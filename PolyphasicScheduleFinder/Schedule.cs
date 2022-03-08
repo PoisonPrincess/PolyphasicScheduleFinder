@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PolyphasicScheduleFinder
 {
@@ -48,9 +47,7 @@ namespace PolyphasicScheduleFinder
         #endregion
 
         #region utilities
-        /// <summary>
-        /// Find TST based on sleep block lengths
-        /// </summary>
+        /// <summary> Find TST based on sleep block lengths </summary>
         internal string getTST()
         {
             int sleepTime = 0;
